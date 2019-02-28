@@ -10,10 +10,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<meta name="author" content="Aditya" />
+<meta name="author" content="Shokan" />
 
 
-<title>How to manipulate Big Data using Microsoft R Server?</title>
+<title>Solving the problem as Churn Rate)</title>
 
 
 
@@ -68,9 +68,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 
 <section class="page-header">
-<h1 class="title toc-ignore project-name">How to manipulate Big Data using Microsoft R Server?</h1>
-<h4 class="author project-author"><strong>Aditya</strong></h4>
-<h4 class="date project-date">08-Mar-2017</h4>
+<h1 class="title toc-ignore project-name">Soling Churn rate prediction problem</h1>
+<h4 class="author project-author"><strong>Shokan</strong></h4>
+<h4 class="date project-date">28-Feb-2019</h4>
 </section>
 
 
@@ -85,7 +85,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>It is always in the best interest of any organization to know more about its customers. In this particular scenario, a certain company has all the tools to capture the mobile device usage behaviour of its customers through an SDK installed in its app. The company wants to predict the gender of its users basis this information. There are multiple benefits in accurately predicting this information. Typically gender is a <a href="https://en.wikipedia.org/wiki/Personally_identifiable_information">PII</a> and users are not willing to share it readily. By predicting the gender information the companies can gain by better segmenting its users and showing more targeted ads hence bumping up the ROI considerably on the marketing campaigns.</p>
 <p>The data has a collection of about 6 files. As we can see below few files are pretty big to fit in to the RAM hence the need to use MRS.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(dplyr)
-<span class="kw">data.frame</span>(<span class="dt">name =</span> <span class="kw">list.files</span>(<span class="dt">pattern =</span> <span class="st">&quot;csv&quot;</span>), 
+<span class="kw">data.frame</span>(<span class="dt">name =</span> <span class="kw">list.files</span>(<span class="dt">pattern =</span> <span class="st">&quot;csv&quot;</span>),
            <span class="dt">size_in_MB =</span> <span class="kw">file.size</span>(<span class="kw">list.files</span>(<span class="dt">pattern =</span> <span class="st">&quot;csv&quot;</span>))/<span class="dv">10</span>^<span class="dv">6</span>) %&gt;%<span class="st"> </span>
 <span class="st">        </span><span class="kw">arrange</span>(<span class="kw">desc</span>(size_in_MB))</code></pre></div>
 <pre><code>##                           name  size_in_MB
@@ -165,11 +165,11 @@ i$data</code></pre></div>
 <li><p>Get the Year, Month, Day, Hour and Minute information from <code>timestamp</code> for each of the events</p></li>
 </ol>
 <p>For step a., we will use the <code>rxMerge</code> function</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">merged.xdf &lt;-<span class="st"> </span><span class="kw">rxMerge</span>(events.xdf, 
-                      map, 
-                      <span class="dt">type =</span> <span class="st">&quot;inner&quot;</span>, 
-                      <span class="dt">matchVars =</span> <span class="st">&quot;device_id&quot;</span>, 
-                      <span class="dt">outFile =</span> <span class="st">&quot;merged.xdf&quot;</span>, 
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">merged.xdf &lt;-<span class="st"> </span><span class="kw">rxMerge</span>(events.xdf,
+                      map,
+                      <span class="dt">type =</span> <span class="st">&quot;inner&quot;</span>,
+                      <span class="dt">matchVars =</span> <span class="st">&quot;device_id&quot;</span>,
+                      <span class="dt">outFile =</span> <span class="st">&quot;merged.xdf&quot;</span>,
                       <span class="dt">overwrite =</span> <span class="ot">TRUE</span>)
 
 i &lt;-<span class="st"> </span><span class="kw">rxGetInfo</span>(merged.xdf, <span class="dt">numRows =</span> <span class="dv">5</span>, <span class="dt">getVarInfo =</span> <span class="ot">TRUE</span>)
@@ -181,12 +181,12 @@ i$numRows</code></pre></div>
            <span class="dt">transforms =</span> <span class="kw">list</span>(
                    <span class="dt">year =</span> (<span class="kw">as.POSIXlt</span>(timestamp))$year,
                    <span class="dt">month =</span> (<span class="kw">as.POSIXlt</span>(timestamp))$mon,
-                   <span class="dt">day  =</span> <span class="kw">factor</span>((<span class="kw">as.POSIXlt</span>(timestamp))$wday, <span class="dt">levels =</span> <span class="dv">0</span>:<span class="dv">6</span>, 
+                   <span class="dt">day  =</span> <span class="kw">factor</span>((<span class="kw">as.POSIXlt</span>(timestamp))$wday, <span class="dt">levels =</span> <span class="dv">0</span>:<span class="dv">6</span>,
                        <span class="dt">labels =</span> <span class="kw">c</span>(<span class="st">&quot;Su&quot;</span>,<span class="st">&quot;M&quot;</span>,<span class="st">&quot;Tu&quot;</span>, <span class="st">&quot;W&quot;</span>, <span class="st">&quot;Th&quot;</span>,<span class="st">&quot;F&quot;</span>, <span class="st">&quot;Sa&quot;</span>)),
                    <span class="dt">hr =</span> (<span class="kw">as.POSIXlt</span>(timestamp))$hour,
                    <span class="dt">min =</span> (<span class="kw">as.POSIXlt</span>(timestamp))$min
            ),
-           <span class="dt">transformPackages =</span> <span class="kw">c</span>(<span class="st">&quot;base&quot;</span>)) 
+           <span class="dt">transformPackages =</span> <span class="kw">c</span>(<span class="st">&quot;base&quot;</span>))
 
 i &lt;-<span class="st"> </span><span class="kw">rxGetInfo</span>(merged.xdf, <span class="dt">numRows =</span> <span class="dv">5</span>, <span class="dt">getVarInfo =</span> <span class="ot">TRUE</span>)
 i$data</code></pre></div>
@@ -204,9 +204,9 @@ i$data</code></pre></div>
 ## 5  116     4   F 15  36</code></pre>
 <p>Now we can drop <code>device_id</code> and <code>timestamp</code> variables.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">merged_new.xdf &lt;-<span class="st"> </span><span class="kw">RxXdfData</span>(<span class="st">&quot;merged_new.xdf&quot;</span>)
-<span class="kw">rxDataStep</span>(merged.xdf, 
-           merged_new.xdf, 
-           <span class="dt">overwrite =</span> <span class="ot">TRUE</span>, 
+<span class="kw">rxDataStep</span>(merged.xdf,
+           merged_new.xdf,
+           <span class="dt">overwrite =</span> <span class="ot">TRUE</span>,
            <span class="dt">varsToDrop =</span> <span class="kw">c</span>(<span class="st">&quot;device_id&quot;</span>, <span class="st">&quot;timestamp&quot;</span>))
 
 i &lt;-<span class="st"> </span><span class="kw">rxGetInfo</span>(merged_new.xdf, <span class="dt">numRows =</span> <span class="dv">5</span>, <span class="dt">getVarInfo =</span> <span class="ot">TRUE</span>)
@@ -234,9 +234,9 @@ i$data</code></pre></div>
 app_events.xdf &lt;-<span class="st"> &quot;app_events.xdf&quot;</span>
 
 <span class="co"># Import the csv into an xdf data source</span>
-app_events.xdf &lt;-<span class="st"> </span><span class="kw">rxImport</span>(app_events, 
-                           app_events.xdf, 
-                           <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>, 
+app_events.xdf &lt;-<span class="st"> </span><span class="kw">rxImport</span>(app_events,
+                           app_events.xdf,
+                           <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>,
                            <span class="dt">overwrite =</span> <span class="ot">TRUE</span>)
 
 i &lt;-<span class="st"> </span><span class="kw">rxGetInfo</span>(app_events.xdf, <span class="dt">getVarInfo =</span> <span class="ot">TRUE</span>, <span class="dt">numRows =</span> <span class="dv">5</span>)
@@ -250,10 +250,10 @@ i$numRows</code></pre></div>
 ## 4        2 -6.531843e+17            1         1
 ## 5        2  8.693964e+18            1         1</code></pre>
 <p>This file has about 32M rows with information about apps involved in each and every event. We will merge this information with <code>merged_new.xdf</code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">all.merged.xdf &lt;-<span class="st"> </span><span class="kw">rxMerge</span>(merged_new.xdf, 
-                          app_events.xdf, 
-                          <span class="dt">outFile =</span> <span class="st">&quot;all.merged.xdf&quot;</span>, 
-                          <span class="dt">type =</span> <span class="st">&quot;inner&quot;</span>, 
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">all.merged.xdf &lt;-<span class="st"> </span><span class="kw">rxMerge</span>(merged_new.xdf,
+                          app_events.xdf,
+                          <span class="dt">outFile =</span> <span class="st">&quot;all.merged.xdf&quot;</span>,
+                          <span class="dt">type =</span> <span class="st">&quot;inner&quot;</span>,
                           <span class="dt">matchVars =</span> <span class="st">&quot;event_id&quot;</span>,
                           <span class="dt">overwrite =</span> <span class="ot">TRUE</span>,
                           <span class="dt">varsToDrop2 =</span> <span class="kw">c</span>(<span class="st">&quot;is_installed&quot;</span>, <span class="st">&quot;is_active&quot;</span>))
@@ -334,21 +334,21 @@ i$data</code></pre></div>
 <ol start="3" style="list-style-type: lower-alpha">
 <li>Finally merge steps a &amp; b. Compared to the capabilities of Open R this appears a bit awkward but the power lies in the parallel algorithms and spped of execution when working with big data files.</li>
 </ol>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">top_day.xdf &lt;-<span class="st"> </span><span class="kw">rxMerge</span>(agg3.xdf, 
-                       agg2.xdf, 
-                       <span class="dt">outFile =</span> <span class="st">&quot;top_day.xdf&quot;</span>, 
-                       <span class="dt">type =</span> <span class="st">&quot;inner&quot;</span>, 
-                       <span class="dt">matchVars =</span> <span class="kw">c</span>(<span class="st">&quot;new_id&quot;</span>, <span class="st">&quot;max_num_apps&quot;</span>), 
-                       <span class="dt">overwrite =</span> <span class="ot">TRUE</span>, 
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">top_day.xdf &lt;-<span class="st"> </span><span class="kw">rxMerge</span>(agg3.xdf,
+                       agg2.xdf,
+                       <span class="dt">outFile =</span> <span class="st">&quot;top_day.xdf&quot;</span>,
+                       <span class="dt">type =</span> <span class="st">&quot;inner&quot;</span>,
+                       <span class="dt">matchVars =</span> <span class="kw">c</span>(<span class="st">&quot;new_id&quot;</span>, <span class="st">&quot;max_num_apps&quot;</span>),
+                       <span class="dt">overwrite =</span> <span class="ot">TRUE</span>,
                        <span class="dt">newVarNames2 =</span> <span class="kw">c</span>(<span class="dt">num_apps =</span> <span class="st">&quot;max_num_apps&quot;</span>))
 
 <span class="co"># Select the first day in case there is a tie between 2 days. </span>
 <span class="co"># We can as well select last day</span>
 
-<span class="kw">rxSort</span>(<span class="dt">inData =</span> top_day.xdf, 
-       <span class="dt">outFile =</span> top_day.xdf, 
-       <span class="dt">sortByVars =</span> <span class="st">&quot;new_id&quot;</span>, 
-       <span class="dt">removeDupKeys =</span> <span class="ot">TRUE</span>, 
+<span class="kw">rxSort</span>(<span class="dt">inData =</span> top_day.xdf,
+       <span class="dt">outFile =</span> top_day.xdf,
+       <span class="dt">sortByVars =</span> <span class="st">&quot;new_id&quot;</span>,
+       <span class="dt">removeDupKeys =</span> <span class="ot">TRUE</span>,
        <span class="dt">overwrite =</span> <span class="ot">TRUE</span>)
 
 i &lt;-<span class="st"> </span><span class="kw">rxGetInfo</span>(top_day.xdf, <span class="dt">getVarInfo =</span> <span class="ot">TRUE</span>, <span class="dt">numRows =</span> <span class="dv">5</span>)
@@ -373,17 +373,17 @@ agg5.xdf &lt;-<span class="st"> </span>agg4.xdf %&gt;%
 <span class="st">        </span><span class="kw">summarise</span>(<span class="dt">max_num_apps =</span> <span class="kw">max</span>(num_apps)) %&gt;%<span class="st"> </span>
 <span class="st">        </span><span class="kw">persist</span>(<span class="st">&quot;agg5.xdf&quot;</span>)
 
-top_hr.xdf &lt;-<span class="st"> </span><span class="kw">rxMerge</span>(agg5.xdf, agg4.xdf, <span class="dt">outFile =</span> <span class="st">&quot;top_hr.xdf&quot;</span>, <span class="dt">type =</span> <span class="st">&quot;inner&quot;</span>, 
-                        <span class="dt">matchVars =</span> <span class="kw">c</span>(<span class="st">&quot;new_id&quot;</span>, <span class="st">&quot;max_num_apps&quot;</span>), 
-                        <span class="dt">overwrite =</span> <span class="ot">TRUE</span>, 
+top_hr.xdf &lt;-<span class="st"> </span><span class="kw">rxMerge</span>(agg5.xdf, agg4.xdf, <span class="dt">outFile =</span> <span class="st">&quot;top_hr.xdf&quot;</span>, <span class="dt">type =</span> <span class="st">&quot;inner&quot;</span>,
+                        <span class="dt">matchVars =</span> <span class="kw">c</span>(<span class="st">&quot;new_id&quot;</span>, <span class="st">&quot;max_num_apps&quot;</span>),
+                        <span class="dt">overwrite =</span> <span class="ot">TRUE</span>,
                         <span class="dt">newVarNames2 =</span> <span class="kw">c</span>(<span class="dt">num_apps =</span> <span class="st">&quot;max_num_apps&quot;</span>))
 
 <span class="co"># Select the first hour in case there is a tie between 2 different hours. We can as well select last hour.</span>
 
-<span class="kw">rxSort</span>(<span class="dt">inData =</span> top_hr.xdf, 
-       <span class="dt">outFile =</span> top_hr.xdf, 
-       <span class="dt">sortByVars =</span> <span class="st">&quot;new_id&quot;</span>, 
-       <span class="dt">removeDupKeys =</span> <span class="ot">TRUE</span>, 
+<span class="kw">rxSort</span>(<span class="dt">inData =</span> top_hr.xdf,
+       <span class="dt">outFile =</span> top_hr.xdf,
+       <span class="dt">sortByVars =</span> <span class="st">&quot;new_id&quot;</span>,
+       <span class="dt">removeDupKeys =</span> <span class="ot">TRUE</span>,
        <span class="dt">overwrite =</span> <span class="ot">TRUE</span>)
 
 i &lt;-<span class="st"> </span><span class="kw">rxGetInfo</span>(top_hr.xdf, <span class="dt">getVarInfo =</span> <span class="ot">TRUE</span>, <span class="dt">numRows =</span> <span class="dv">5</span>)
@@ -395,21 +395,21 @@ i$data</code></pre></div>
 ## 4     16           46 12
 ## 5     19          103 17</code></pre>
 <p>Finally, merging <code>top_day.xdf</code> and <code>top_hr.xdf</code> with <code>agg.xdf</code> to bring all features together</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">allfeat.xdf &lt;-<span class="st"> </span><span class="kw">rxMerge</span>(agg.xdf, 
-                       top_day.xdf, 
-                       <span class="dt">outFile =</span> <span class="st">&quot;allfeat.xdf&quot;</span>, 
-                       <span class="dt">matchVars =</span> <span class="st">&quot;new_id&quot;</span>, 
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">allfeat.xdf &lt;-<span class="st"> </span><span class="kw">rxMerge</span>(agg.xdf,
+                       top_day.xdf,
+                       <span class="dt">outFile =</span> <span class="st">&quot;allfeat.xdf&quot;</span>,
+                       <span class="dt">matchVars =</span> <span class="st">&quot;new_id&quot;</span>,
                        <span class="dt">type =</span> <span class="st">&quot;inner&quot;</span>,
                        <span class="dt">overwrite =</span> <span class="ot">TRUE</span>
                        <span class="co">#varsToDrop2 = &quot;max_num_apps&quot;, </span>
                        <span class="co">#newVarNames2 = c(day = &quot;top_day&quot;)</span>
                       )
 
-allfeat.xdf &lt;-<span class="st"> </span><span class="kw">rxMerge</span>(allfeat.xdf, 
-                       top_hr.xdf, 
-                       <span class="dt">outFile =</span> <span class="st">&quot;allfeat.xdf&quot;</span>, 
-                       <span class="dt">matchVars =</span> <span class="st">&quot;new_id&quot;</span>, 
-                       <span class="dt">type =</span> <span class="st">&quot;inner&quot;</span>, 
+allfeat.xdf &lt;-<span class="st"> </span><span class="kw">rxMerge</span>(allfeat.xdf,
+                       top_hr.xdf,
+                       <span class="dt">outFile =</span> <span class="st">&quot;allfeat.xdf&quot;</span>,
+                       <span class="dt">matchVars =</span> <span class="st">&quot;new_id&quot;</span>,
+                       <span class="dt">type =</span> <span class="st">&quot;inner&quot;</span>,
                        <span class="dt">overwrite =</span> <span class="ot">TRUE</span>
                        <span class="co">#varsToDrop2 = &quot;max_num_apps&quot;, </span>
                        <span class="co">#newVarNames2 = c(hr = &quot;top_hr&quot;)</span>
@@ -429,11 +429,11 @@ i$data</code></pre></div>
 ## 4                  46 12
 ## 5                 103 17</code></pre>
 <p>To conclude the feature engineering process we will map this information with demographic information and remove certain redundant columns.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">allfeat.xdf &lt;-<span class="st"> </span><span class="kw">rxMerge</span>(gender_age, 
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">allfeat.xdf &lt;-<span class="st"> </span><span class="kw">rxMerge</span>(gender_age,
                        allfeat.xdf,
-                       <span class="dt">outFile =</span> <span class="st">&quot;allfeat.xdf&quot;</span>, 
-                       <span class="dt">matchVars =</span> <span class="st">&quot;new_id&quot;</span>, 
-                       <span class="dt">type =</span> <span class="st">&quot;inner&quot;</span>, 
+                       <span class="dt">outFile =</span> <span class="st">&quot;allfeat.xdf&quot;</span>,
+                       <span class="dt">matchVars =</span> <span class="st">&quot;new_id&quot;</span>,
+                       <span class="dt">type =</span> <span class="st">&quot;inner&quot;</span>,
                        <span class="dt">overwrite =</span> <span class="ot">TRUE</span>,
                        <span class="dt">varsToDrop2 =</span> <span class="kw">c</span>(<span class="st">&quot;max_num_apps.allfeat&quot;</span>, <span class="st">&quot;max_num_apps.top_hr&quot;</span>)
                        )
@@ -448,20 +448,20 @@ i$data</code></pre></div>
 <p>Note that we are ignoring the devices which do not have the app events related information.</p>
 <p>We managed to get the data in to a good shape to explore if there is any relationship between the gender and max activity day and max activity hour.</p>
 <p>Before we do that we need to convert the <code>hr</code> variable to factor as well.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">allfeat.xdf &lt;-<span class="st"> </span><span class="kw">rxFactors</span>(allfeat.xdf, 
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">allfeat.xdf &lt;-<span class="st"> </span><span class="kw">rxFactors</span>(allfeat.xdf,
                          <span class="dt">factorInfo =</span> <span class="kw">list</span>(
                                  <span class="dt">hr =</span> <span class="kw">list</span>(<span class="dt">levels =</span> <span class="dv">0</span>:<span class="dv">23</span>,
-                                         <span class="dt">newLevels =</span> <span class="kw">c</span>( <span class="st">`</span><span class="dt">0</span><span class="st">`</span> =<span class="st"> &quot;0&quot;</span>, <span class="st">`</span><span class="dt">1</span><span class="st">`</span> =<span class="st"> &quot;1&quot;</span>, 
-                                                        <span class="st">`</span><span class="dt">2</span><span class="st">`</span> =<span class="st"> &quot;2&quot;</span>, <span class="st">`</span><span class="dt">3</span><span class="st">`</span> =<span class="st"> &quot;3&quot;</span>, 
-                                                        <span class="st">`</span><span class="dt">4</span><span class="st">`</span> =<span class="st"> &quot;4&quot;</span>, <span class="st">`</span><span class="dt">5</span><span class="st">`</span> =<span class="st"> &quot;5&quot;</span>, 
-                                                        <span class="st">`</span><span class="dt">6</span><span class="st">`</span> =<span class="st"> &quot;6&quot;</span>, <span class="st">`</span><span class="dt">7</span><span class="st">`</span> =<span class="st"> &quot;7&quot;</span>, 
+                                         <span class="dt">newLevels =</span> <span class="kw">c</span>( <span class="st">`</span><span class="dt">0</span><span class="st">`</span> =<span class="st"> &quot;0&quot;</span>, <span class="st">`</span><span class="dt">1</span><span class="st">`</span> =<span class="st"> &quot;1&quot;</span>,
+                                                        <span class="st">`</span><span class="dt">2</span><span class="st">`</span> =<span class="st"> &quot;2&quot;</span>, <span class="st">`</span><span class="dt">3</span><span class="st">`</span> =<span class="st"> &quot;3&quot;</span>,
+                                                        <span class="st">`</span><span class="dt">4</span><span class="st">`</span> =<span class="st"> &quot;4&quot;</span>, <span class="st">`</span><span class="dt">5</span><span class="st">`</span> =<span class="st"> &quot;5&quot;</span>,
+                                                        <span class="st">`</span><span class="dt">6</span><span class="st">`</span> =<span class="st"> &quot;6&quot;</span>, <span class="st">`</span><span class="dt">7</span><span class="st">`</span> =<span class="st"> &quot;7&quot;</span>,
                                                         <span class="st">`</span><span class="dt">8</span><span class="st">`</span> =<span class="st"> &quot;8&quot;</span>, <span class="st">`</span><span class="dt">9</span><span class="st">`</span> =<span class="st"> &quot;9&quot;</span>,
-                                                        <span class="st">`</span><span class="dt">10</span><span class="st">`</span> =<span class="st"> &quot;10&quot;</span>, <span class="st">`</span><span class="dt">11</span><span class="st">`</span> =<span class="st"> &quot;11&quot;</span>, 
-                                                        <span class="st">`</span><span class="dt">12</span><span class="st">`</span> =<span class="st"> &quot;12&quot;</span>, <span class="st">`</span><span class="dt">13</span><span class="st">`</span> =<span class="st"> &quot;13&quot;</span>, 
-                                                        <span class="st">`</span><span class="dt">14</span><span class="st">`</span> =<span class="st"> &quot;14&quot;</span>, <span class="st">`</span><span class="dt">15</span><span class="st">`</span> =<span class="st"> &quot;15&quot;</span>, 
-                                                        <span class="st">`</span><span class="dt">16</span><span class="st">`</span> =<span class="st"> &quot;16&quot;</span>, <span class="st">`</span><span class="dt">17</span><span class="st">`</span> =<span class="st"> &quot;17&quot;</span>, 
-                                                        <span class="st">`</span><span class="dt">18</span><span class="st">`</span> =<span class="st"> &quot;18&quot;</span>, <span class="st">`</span><span class="dt">19</span><span class="st">`</span> =<span class="st"> &quot;19&quot;</span>, 
-                                                        <span class="st">`</span><span class="dt">20</span><span class="st">`</span> =<span class="st"> &quot;20&quot;</span>, <span class="st">`</span><span class="dt">21</span><span class="st">`</span> =<span class="st"> &quot;21&quot;</span>, 
+                                                        <span class="st">`</span><span class="dt">10</span><span class="st">`</span> =<span class="st"> &quot;10&quot;</span>, <span class="st">`</span><span class="dt">11</span><span class="st">`</span> =<span class="st"> &quot;11&quot;</span>,
+                                                        <span class="st">`</span><span class="dt">12</span><span class="st">`</span> =<span class="st"> &quot;12&quot;</span>, <span class="st">`</span><span class="dt">13</span><span class="st">`</span> =<span class="st"> &quot;13&quot;</span>,
+                                                        <span class="st">`</span><span class="dt">14</span><span class="st">`</span> =<span class="st"> &quot;14&quot;</span>, <span class="st">`</span><span class="dt">15</span><span class="st">`</span> =<span class="st"> &quot;15&quot;</span>,
+                                                        <span class="st">`</span><span class="dt">16</span><span class="st">`</span> =<span class="st"> &quot;16&quot;</span>, <span class="st">`</span><span class="dt">17</span><span class="st">`</span> =<span class="st"> &quot;17&quot;</span>,
+                                                        <span class="st">`</span><span class="dt">18</span><span class="st">`</span> =<span class="st"> &quot;18&quot;</span>, <span class="st">`</span><span class="dt">19</span><span class="st">`</span> =<span class="st"> &quot;19&quot;</span>,
+                                                        <span class="st">`</span><span class="dt">20</span><span class="st">`</span> =<span class="st"> &quot;20&quot;</span>, <span class="st">`</span><span class="dt">21</span><span class="st">`</span> =<span class="st"> &quot;21&quot;</span>,
                                                         <span class="st">`</span><span class="dt">22</span><span class="st">`</span> =<span class="st"> &quot;22&quot;</span>, <span class="st">`</span><span class="dt">23</span><span class="st">`</span> =<span class="st"> &quot;23&quot;</span>)
                                  )),
                          <span class="dt">overwrite =</span> <span class="ot">TRUE</span>
@@ -490,7 +490,7 @@ i$varInfo</code></pre></div>
 <p>Since both these variables are factors We can quickly perform a <a href="https://en.wikipedia.org/wiki/Chi-squared_test">Chi-Squared</a> to acces the good of fit.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ch1 &lt;-<span class="st"> </span><span class="kw">rxCrossTabs</span>(~<span class="st"> </span>gender :<span class="st"> </span>day, <span class="dt">data =</span> allfeat.xdf)
 <span class="kw">rxChiSquaredTest</span>(ch1)</code></pre></div>
-<pre><code>## Chi-squared test of independence between gender and day 
+<pre><code>## Chi-squared test of independence between gender and day
 ##  X-squared df   p-value
 ##   3.126907  6 0.7927584</code></pre>
 <p>The p-value is quite high for the relationship to be significant.</p>
@@ -500,7 +500,7 @@ i$varInfo</code></pre></div>
 <p>We will perform the similar test between these 2 variables.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ch2 &lt;-<span class="st"> </span><span class="kw">rxCrossTabs</span>(~<span class="st"> </span>gender :<span class="st"> </span>hr, <span class="dt">data =</span> allfeat.xdf)
 <span class="kw">rxChiSquaredTest</span>(ch2)</code></pre></div>
-<pre><code>## Chi-squared test of independence between gender and hr 
+<pre><code>## Chi-squared test of independence between gender and hr
 ##  X-squared df      p-value
 ##   162.7507 23 5.045395e-23</code></pre>
 <p>The low p-value indicates that the relationship is very strong and maximum activity hour can be a good predictor for the gender.</p>
@@ -519,16 +519,16 @@ i$varInfo</code></pre></div>
 }
 
 <span class="kw">test</span>(<span class="st">&quot;age&quot;</span>)</code></pre></div>
-<pre><code>## 
+<pre><code>##
 ##  Welch Two Sample t-test
-## 
+##
 ## data:  age by gender
 ## t = 4.4002, df = 15029, p-value = 1.089e-05
 ## alternative hypothesis: true difference in means is not equal to 0
 ## 95 percent confidence interval:
 ##  0.3413012 0.8896352
 ## sample estimates:
-## mean in group F mean in group M 
+## mean in group F mean in group M
 ##        32.63179        32.01633</code></pre>
 <p><img src="data:image/png;base64,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" /><!-- --> Again the p-value is quite low indicating age can be a good indicator to predict gender.</p>
 </div>
